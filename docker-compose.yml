@@ -1,0 +1,82 @@
+version: "2"
+
+services:
+    mqtt_broker:
+        extends:
+            file: mqtt_broker/app.yml
+            service: app
+        restart: unless-stopped
+        logging:
+            driver: syslog
+            options:
+                tag: docker-mqtt-broker
+        networks:
+            internal:
+                aliases:
+                    - mqtt.docker.local
+    timeseries-db:
+        extends:
+            file: timeseries_sds/app.yml
+            service: db
+        networks:
+            internal:
+                aliases:
+                    - timeseries-db.docker.local
+        logging:
+            driver: syslog
+            options:
+                tag: docker-timeseries-db
+        restart: unless-stopped
+        depends_on:
+            - "mqtt_broker"
+    timeseries-db-input:
+        extends:
+            file: timeseries_sds/app.yml
+            service: telegraf
+        networks:
+            internal:
+                aliases:
+                    - timeseries-input.docker.local
+        logging:
+            driver: syslog
+            options:
+                tag: docker-timeseries-input
+        restart: unless-stopped
+        depends_on:
+            - "timeseries-db"
+            - "mqtt_broker"
+    analysis:
+        extends:
+            file: analysis/app.yml
+            service: app
+        networks:
+            internal:
+                aliases:
+                    - analysis.docker.local
+        logging:
+            driver: syslog
+            options:
+                tag: docker-analysis
+        restart: unless-stopped
+        depends_on:
+            - "timeseries-db"
+            - "timeseries-db-input"
+    fake-collection:
+        extends:
+            file: fake_dc/app.yml
+            service: app
+        networks:
+            internal:
+                aliases:
+                    - fake-dc.docker.local
+        logging:
+            driver: syslog
+            options:
+                tag: docker-fake-dc
+        restart: unless-stopped
+        depends_on:
+            - "mqtt_broker"
+
+networks:
+     internal:
+         name: shoestring-internal
