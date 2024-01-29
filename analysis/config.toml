@@ -1,0 +1,9 @@
+[influxdb]
+url = "http://timeseries-db.docker.local:8086"
+bucket = "vibration_monitoring"
+org = "SHOESTRING"
+token = "l3Z9k31lKzZ-Ixupk_s3FjinRas-HHbvf7tsBTpEUCP7m5YQL0Z0jF1yjQEC_ZNYLEr6xkSZfuXMUP_spHe9cg=="
+
+
+[ml]
+window_size=100

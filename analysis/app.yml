@@ -1,8 +1,13 @@
 version: '2'
 
 services:
-    app:
-      build: .
+    jupyter:
+      image: jupyter/base-notebook
+      ports:
+        - "8888:8888"
       volumes:
-        - .:/app
+        - .:/home/jovyan/work
+      environment:
+        - JUPYTER_ENABLE_LAB=yes
+      command: start-notebook.sh --NotebookApp.token=''
         
