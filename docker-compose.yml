@@ -45,6 +45,21 @@ services:
         depends_on:
             - "timeseries-db"
             - "mqtt_broker"
+    dashboard:
+        extends:
+            file: dashboard_ui/app.yml
+            service: app
+        networks:
+            internal:
+                aliases:
+                    - dashboard-ui.docker.local
+        logging:
+            driver: syslog
+            options:
+                tag: docker-dashboard-ui
+        restart: unless-stopped
+        depends_on:
+            - "mqtt_broker"
     # analysis:
     #     extends:
     #         file: analysis/app.yml
@@ -61,49 +76,49 @@ services:
     #     depends_on:
     #         - "timeseries-db"
     #         - "timeseries-db-input"
-    fake-collection:
-        extends:
-            file: fake_dc/app.yml
-            service: app
-        networks:
-            internal:
-                aliases:
-                    - fake-dc.docker.local
-        logging:
-            driver: syslog
-            options:
-                tag: docker-fake-dc
-        restart: unless-stopped
-        depends_on:
-            - "mqtt_broker"
+    #fake-collection:
+        #extends:
+            #file: fake_dc/app.yml
+            #service: app
+        #networks:
+            #internal:
+                #aliases:
+                    #- fake-dc.docker.local
+        #logging:
+            #driver: syslog
+            #options:
+                #tag: docker-fake-dc
+        #restart: unless-stopped
+        #depends_on:
+            #- "mqtt_broker"
 
-    mlops_server:
-        extends:
-            file: prefect/app.yml
-            service: server
-        networks:
-            internal:
-                aliases:
-                    - mlops-server.docker.local
-        logging:
-            driver: syslog
-            options:
-                tag: docker-mlops-server
-        restart: unless-stopped
+    # mlops_server:
+    #     extends:
+    #         file: prefect/app.yml
+    #         service: server
+    #     networks:
+    #         internal:
+    #             aliases:
+    #                 - mlops-server.docker.local
+    #     logging:
+    #         driver: syslog
+    #         options:
+    #             tag: docker-mlops-server
+    #     restart: unless-stopped
 
-    mlops_agent:
-        extends:
-            file: prefect/app.yml
-            service: agent
-        networks:
-            internal:
-                aliases:
-                    - mlops-agent.docker.local
-        logging:
-            driver: syslog
-            options:
-                tag: docker-mlops-agent
-        restart: unless-stopped
+    # mlops_agent:
+    #     extends:
+    #         file: prefect/app.yml
+    #         service: agent
+    #     networks:
+    #         internal:
+    #             aliases:
+    #                 - mlops-agent.docker.local
+    #     logging:
+    #         driver: syslog
+    #         options:
+    #             tag: docker-mlops-agent
+    #     restart: unless-stopped
 
 networks:
      internal:
