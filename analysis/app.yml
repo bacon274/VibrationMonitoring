@@ -2,7 +2,7 @@ version: '2'
 
 services:
     jupyter:
-      image: jupyter/base-notebook
+      build: .
       ports:
         - "8888:8888"
       volumes:

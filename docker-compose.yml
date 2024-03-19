@@ -60,22 +60,22 @@ services:
         restart: unless-stopped
         depends_on:
             - "mqtt_broker"
-    # analysis:
-    #     extends:
-    #         file: analysis/app.yml
-    #         service: jupyter
-    #     networks:
-    #         internal:
-    #             aliases:
-    #                 - analysis.docker.local
-    #     logging:
-    #         driver: syslog
-    #         options:
-    #             tag: docker-analysis
-    #     restart: unless-stopped
-    #     depends_on:
-    #         - "timeseries-db"
-    #         - "timeseries-db-input"
+    #analysis:
+        #extends:
+            #file: analysis/app.yml
+            #service: jupyter
+        #networks:
+            #internal:
+                #aliases:
+                    #- analysis.docker.local
+        #logging:
+            #driver: syslog
+            #options:
+                #tag: docker-analysis
+        #restart: unless-stopped
+        #depends_on:
+            #- "timeseries-db"
+            #- "timeseries-db-input"
     #fake-collection:
         #extends:
             #file: fake_dc/app.yml
